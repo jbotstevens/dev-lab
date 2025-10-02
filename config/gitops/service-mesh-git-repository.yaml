@@ -2,19 +2,19 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: dev-lab-repo
+  name: flux-service-mesh-layer
   namespace: flux-system
   labels:
     app.kubernetes.io/part-of: flux
 spec:
   interval: 30s
   ref:
-    branch: dev
-  url: ssh://git@github.com/jbotstevens/dev-lab.git
+    branch: main
+  url: ssh://git@github.com/amelcocloud/flux-service-mesh-layer.git
   secretRef:
-    name: dev-lab-repo
+    name: flux-service-mesh-layer
   ignore: |
     # Ignore non-kubernetes files
     *.md
-    # Ignore other directories not related to this cluster
-    /scripts/
+    # Ignore example directories
+    /examples/
