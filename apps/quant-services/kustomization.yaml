@@ -25,9 +25,15 @@ spec:
       # Override ECR registry with local registry for all services
       ECR_REGISTRY: "406289901644.dkr.ecr.eu-west-1.amazonaws.com"
       LOCAL_REGISTRY: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
-  # Apply image patches
+  # Apply patches for local development
   patches:
+    # Redirect all images from ECR to local registry with upstream tags
     - path: patches/image-registry-patches.yaml
       target:
         kind: HelmRelease
         namespace: quant-services
+    # Enable Linkerd service mesh injection for all quant-services pods
+    - path: patches/linkerd-namespace-injection.yaml
+      target:
+        kind: Namespace
+        name: quant-services

@@ -1,0 +1,20 @@
+# Linkerd Service Mesh Injection Patch for Quant Services Namespace
+# This patch adds the linkerd.io/inject annotation to enable automatic sidecar injection
+# for all pods in the quant-services namespace
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: quant-services
+  annotations:
+    linkerd.io/inject: enabled
+    # Optional: Control plane version alignment
+    config.linkerd.io/proxy-cpu-limit: "1"
+    config.linkerd.io/proxy-cpu-request: "100m"
+    config.linkerd.io/proxy-memory-limit: "256Mi"
+    config.linkerd.io/proxy-memory-request: "128Mi"
+  labels:
+    # Additional labels for monitoring and observability
+    linkerd.io/is-control-plane: "false"
+    config.linkerd.io/admission-webhooks: disabled

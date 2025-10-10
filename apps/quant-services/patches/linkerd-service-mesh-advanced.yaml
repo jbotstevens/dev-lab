@@ -1,0 +1,45 @@
+# Advanced Linkerd Configuration Patches for Quant Services
+# These patches provide fine-grained control over service mesh behavior
+# Apply selectively to services that need special mesh configuration
+
+---
+# Patch for services that need custom proxy configuration
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: template-service  # This will be targeted by specific service names
+spec:
+  values:
+    # Add Linkerd annotations at the pod template level
+    podAnnotations:
+      # Linkerd proxy configuration
+      linkerd.io/inject: enabled
+      config.linkerd.io/proxy-cpu-limit: "500m"
+      config.linkerd.io/proxy-cpu-request: "50m"
+      config.linkerd.io/proxy-memory-limit: "128Mi"
+      config.linkerd.io/proxy-memory-request: "64Mi"
+      
+      # Traffic policy annotations
+      config.linkerd.io/default-inbound-policy: "deny"
+      
+      # Optional: Skip certain ports from mesh (if services have admin ports)
+      config.linkerd.io/skip-inbound-ports: "9090,8080"
+      config.linkerd.io/skip-outbound-ports: "25"
+      
+      # Observability enhancements
+      config.linkerd.io/trace-collector: "linkerd-jaeger.linkerd-jaeger.svc.cluster.local:14268"
+      
+    # Service mesh related labels
+    podLabels:
+      # Help with service discovery and monitoring
+      linkerd.io/workload-ns: quant-services
+      app.kubernetes.io/part-of: quant-services-layer
+      
+    # Optional: Service configuration for better mesh integration
+    service:
+      annotations:
+        # Service profile annotations for advanced traffic management
+        linkerd.io/created-by: "flux-kustomization"
+      labels:
+        # Mirror pod labels on service
+        linkerd.io/workload-ns: quant-services
