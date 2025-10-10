@@ -1,33 +1,33 @@
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: quant-services-layer
-  namespace: flux-system
-spec:
-  interval: 5m
-  sourceRef:
-    kind: GitRepository
-    name: quant-services
-  path: "./quant-services-layer"
-  prune: true
-  wait: true
-  timeout: 15m
-  # Depend on container registry being available
-  dependsOn:
-    - name: dev-lab-infrastructure
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: global-kustomization-postbuild-variables
-    # Apply patches to redirect images to local registry
-    substitute:
-      # Override ECR registry with local registry for all services
-      ECR_REGISTRY: "406289901644.dkr.ecr.eu-west-1.amazonaws.com"
-      LOCAL_REGISTRY: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
-  # Apply image patches
-  patches:
-    - path: patches/image-registry-patches.yaml
-      target:
-        kind: HelmRelease
-        namespace: quant-services
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: quant-services-layer
+#   namespace: flux-system
+# spec:
+#   interval: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: quant-services
+#   path: "./quant-services-layer"
+#   prune: true
+#   wait: true
+#   timeout: 15m
+#   # Depend on container registry being available
+#   dependsOn:
+#     - name: dev-lab-infrastructure
+#   postBuild:
+#     substituteFrom:
+#       - kind: ConfigMap
+#         name: global-kustomization-postbuild-variables
+#     # Apply patches to redirect images to local registry
+#     substitute:
+#       # Override ECR registry with local registry for all services
+#       ECR_REGISTRY: "406289901644.dkr.ecr.eu-west-1.amazonaws.com"
+#       LOCAL_REGISTRY: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
+#   # Apply image patches
+#   patches:
+#     - path: patches/image-registry-patches.yaml
+#       target:
+#         kind: HelmRelease
+#         namespace: quant-services
