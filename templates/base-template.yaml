@@ -1,25 +1,23 @@
----
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: mesh-test
+  name: SERVICE_NAME_PLACEHOLDER
   labels:
-    name: mesh-test
+    name: SERVICE_NAME_PLACEHOLDER
   annotations:
-    # This annotation enables automatic Linkerd proxy injection
     linkerd.io/inject: enabled
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mesh-test-app
-  namespace: mesh-test
+  name: SERVICE_NAME_PLACEHOLDER
+  namespace: SERVICE_NAME_PLACEHOLDER
   labels:
-    app: mesh-test-app
+    app: SERVICE_NAME_PLACEHOLDER
     version: v1
 spec:
-  replicas: 5
+  replicas: 3
   revisionHistoryLimit: 1
   strategy:
     rollingUpdate:
@@ -28,44 +26,44 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: mesh-test-app
+      app: SERVICE_NAME_PLACEHOLDER
       version: v1
   template:
     metadata:
       labels:
-        app: mesh-test-app
+        app: SERVICE_NAME_PLACEHOLDER
         version: v1
     spec:
       containers:
-      - name: mesh-test-app
-        image: localhost:5000/mesh-test-app:v9
+      - name: SERVICE_NAME_PLACEHOLDER
+        image: localhost:5000/SERVICE_NAME_PLACEHOLDER:v1
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - containerPort: PORT_PLACEHOLDER
           name: http
         env:
         - name: APP_VERSION
-          value: "v9"  # ← Update version to trigger canary
-        - name: REDIS_URL
-          value: "redis://redis-service:6379"
+          value: "v1"
+        - name: NODE_ENV
+          value: "production"
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 50m
+            memory: 64Mi
           limits:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 150m
+            memory: 128Mi
         livenessProbe:
           httpGet:
             path: /health/live
-            port: 3000  # Use app port directly for health checks
+            port: PORT_PLACEHOLDER
           initialDelaySeconds: 30
           periodSeconds: 10
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /health/ready
-            port: 3000  # Use app port directly for health checks
+            port: PORT_PLACEHOLDER
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
@@ -78,16 +76,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mesh-test-app-service
-  namespace: mesh-test
+  name: SERVICE_NAME_PLACEHOLDER
+  namespace: SERVICE_NAME_PLACEHOLDER
   labels:
-    app: mesh-test-app
+    app: SERVICE_NAME_PLACEHOLDER
 spec:
   selector:
-    app: mesh-test-app
+    app: SERVICE_NAME_PLACEHOLDER
   ports:
   - port: 80
-    targetPort: 3000
+    targetPort: PORT_PLACEHOLDER
     name: http
   type: ClusterIP
 
@@ -95,19 +93,19 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mesh-test-app-ingress
-  namespace: mesh-test
+  name: SERVICE_NAME_PLACEHOLDER-ingress
+  namespace: SERVICE_NAME_PLACEHOLDER
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: mesh-test.local
+  - host: SERVICE_NAME_PLACEHOLDER.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: mesh-test-app-service
+            name: SERVICE_NAME_PLACEHOLDER
             port:
               number: 80
