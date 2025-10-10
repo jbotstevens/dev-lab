@@ -20,14 +20,54 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: global-kustomization-postbuild-variables
-    # Apply patches to redirect images to local registry
-    substitute:
-      # Override ECR registry with local registry for all services
-      ECR_REGISTRY: "406289901644.dkr.ecr.eu-west-1.amazonaws.com"
-      LOCAL_REGISTRY: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
-  # Apply patches for local development
-  patchesStrategicMerge:
-    # Redirect all images from ECR to local registry with upstream tags
-    - patches/image-registry-patches.yaml
+  # Redirect all images from ECR to local registry with upstream tags
+  images:
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/dash-ws
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-ws
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/external-prices-gather
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/external-prices-gather
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/adh-consumer
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/adh-consumer
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/nba-livescores
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/nba-livescores
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/wnba-reports
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/wnba-reports
+      newTag: "1.0.1"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/dash-auth
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-auth
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/unabated-news-feeder
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/unabated-news-feeder
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/betticker-ws
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/betticker-ws
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rw-proj-min
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/news-gather
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/news-gather
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rw-proj-min-store
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min-store
+      newTag: "1.0.0"
+    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rapid-pini-feeder
+      newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rapid-pini-feeder
+      newTag: "1.0.0"
+  # Apply patches for service mesh integration
+  patches:
     # Enable Linkerd service mesh injection for all quant-services pods
-    - patches/linkerd-namespace-injection.yaml
+    - target:
+        kind: Namespace
+        name: quant-services
+      patch: |
+        - op: add
+          path: /metadata/annotations
+          value:
+            linkerd.io/inject: enabled
+            config.linkerd.io/proxy-cpu-limit: "1"
+            config.linkerd.io/proxy-memory-limit: "512Mi"
