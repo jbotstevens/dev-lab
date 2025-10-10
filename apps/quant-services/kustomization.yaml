@@ -16,10 +16,6 @@ spec:
   # Depend on container registry being available
   dependsOn:
     - name: dev-lab-registry
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: global-kustomization-postbuild-variables
   # Redirect all images from ECR to local registry with upstream tags
   images:
     - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/dash-ws
