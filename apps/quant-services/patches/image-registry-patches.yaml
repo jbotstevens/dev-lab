@@ -1,0 +1,150 @@
+# Image Registry Patches for Dev Lab with Upstream Tags
+# This file contains strategic merge patches to redirect all quant-services images
+# from ECR (406289901644.dkr.ecr.eu-west-1.amazonaws.com) to local dev-lab registry
+# while preserving the original image tags from the upstream HelmReleases
+# Auto-generated - DO NOT EDIT MANUALLY, use sync-tags.sh instead
+
+---
+# Patch for dash-ws
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dash-ws
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-ws
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for external-prices-gather
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-prices-gather
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/external-prices-gather
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for adh-consumer
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: adh-consumer
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/adh-consumer
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for nba-livescores
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nba-livescores
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/nba-livescores
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for wnba-reports
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wnba-reports
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/wnba-reports
+      tag: "1.0.1"  # Preserving upstream tag
+
+---
+# Patch for dash-auth
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dash-auth
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-auth
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for unabated-news-feeder
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unabated-news-feeder
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/unabated-news-feeder
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for betticker-ws
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: betticker-ws
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/betticker-ws
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for rw-proj-min
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rw-proj-min
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for news-gather
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: news-gather
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/news-gather
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for rw-proj-min-store
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rw-proj-min-store
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min-store
+      tag: "1.0.0"  # Preserving upstream tag
+
+---
+# Patch for rapid-pini-feeder
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rapid-pini-feeder
+spec:
+  values:
+    image:
+      repository: docker-registry.dev-lab-registry.svc.cluster.local:5000/rapid-pini-feeder
+      tag: "1.0.0"  # Preserving upstream tag
+

@@ -1,0 +1,31 @@
+# JSON Patches for Image Registry Override
+# Alternative approach using JSON patches for more precise control
+
+---
+# JSON patch to replace image repositories across all HelmReleases
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: quant-services-registry-override
+spec:
+  # This is a sample showing how to use JSON patches
+  # The main kustomization.yaml uses strategic merge patches which are simpler
+  patches:
+    # Replace ECR registry with local registry for all images
+    - target:
+        kind: HelmRelease
+        name: ".*"
+        namespace: quant-services
+      patch: |
+        - op: replace
+          path: /spec/values/image/repository
+          value: docker-registry.dev-lab-registry.svc.cluster.local:5000/$(echo $TARGET_NAME | sed 's/.*name: //')
+          
+    # Add pull policy for local registry
+    - target:
+        kind: HelmRelease
+        namespace: quant-services
+      patch: |
+        - op: add
+          path: /spec/values/image/pullPolicy
+          value: Always

@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: quant-services
+  namespace: flux-system
+spec:
+  interval: 5m
+  url: ssh://github.com/amelcocloud/quant-services
+  ref:
+    branch: XOPS-0000-quant-services-layer
+  secretRef:
+    name: quant-services
