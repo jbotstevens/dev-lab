@@ -18,40 +18,40 @@ spec:
     - name: dev-lab-registry
   # Redirect all images from ECR to local registry with upstream tags
   images:
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/dash-ws
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/dash-ws
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-ws
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/external-prices-gather
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/external-prices-gather
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/external-prices-gather
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/adh-consumer
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/adh-consumer
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/adh-consumer
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/nba-livescores
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/nba-livescores
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/nba-livescores
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/wnba-reports
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/wnba-reports
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/wnba-reports
       newTag: "1.0.1"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/dash-auth
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/dash-auth
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/dash-auth
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/unabated-news-feeder
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/unabated-news-feeder
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/unabated-news-feeder
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/betticker-ws
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/betticker-ws
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/betticker-ws
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rw-proj-min
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/rw-proj-min
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/news-gather
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/news-gather
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/news-gather
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rw-proj-min-store
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/rw-proj-min-store
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rw-proj-min-store
       newTag: "1.0.0"
-    - name: 406289901644.dkr.ecr.eu-west-1.amazonaws.com/rapid-pini-feeder
+    - name: 294159772612.dkr.ecr.eu-west-1.amazonaws.com/quant-services/rapid-pini-feeder
       newName: docker-registry.dev-lab-registry.svc.cluster.local:5000/rapid-pini-feeder
       newTag: "1.0.0"
   # Apply patches for service mesh integration
