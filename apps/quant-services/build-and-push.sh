@@ -4,10 +4,11 @@
 # using the same image tags as defined in the upstream HelmReleases
 # Auto-generated - DO NOT EDIT MANUALLY, use sync-tags.sh instead
 
-set -e
+set -o pipefail  # More permissive than set -e but still catches pipeline failures
 
 # Configuration
 QUANT_SERVICES_DIR="/home/jstevens/git/amelcocloud/quant-services/services"
+QUANT_SERVICES_ROOT="/home/jstevens/git/amelcocloud/quant-services"
 LOCAL_REGISTRY="docker-registry.dev-lab-registry.svc.cluster.local:5000"
 LOCAL_REGISTRY_EXTERNAL="localhost:5000"  # For external access during build
 
@@ -21,7 +22,14 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}🚀 Building and pushing quant services with upstream tags to dev-lab registry${NC}"
 echo "========================================================================"
 
-# Check if quant-services directory exists
+# Check if quant-services repository root exists
+if [ ! -d "$QUANT_SERVICES_ROOT" ]; then
+    echo -e "${RED}❌ Quant services repository not found: $QUANT_SERVICES_ROOT${NC}"
+    echo -e "${YELLOW}💡 Make sure amelcocloud/quant-services is cloned to the expected location${NC}"
+    exit 1
+fi
+
+# Check if quant-services services directory exists
 if [ ! -d "$QUANT_SERVICES_DIR" ]; then
     echo -e "${RED}❌ Quant services directory not found: $QUANT_SERVICES_DIR${NC}"
     exit 1
@@ -71,6 +79,22 @@ kubectl port-forward -n dev-lab-registry service/docker-registry 5000:5000 &
 PORT_FORWARD_PID=$!
 sleep 5
 
+# Test registry connectivity
+echo -e "${BLUE}🔍 Testing registry connectivity...${NC}"
+for i in {1..5}; do
+    if curl -s http://localhost:5000/v2/_catalog >/dev/null 2>&1; then
+        echo -e "${GREEN}✅ Registry accessible at localhost:5000${NC}"
+        break
+    elif [ $i -eq 5 ]; then
+        echo -e "${RED}❌ Registry not accessible after 5 attempts${NC}"
+        echo -e "${YELLOW}💡 Check if port forwarding is working${NC}"
+        exit 1
+    else
+        echo "  Attempt $i/5: Waiting for registry..."
+        sleep 2
+    fi
+done
+
 # Cleanup function
 cleanup() {
     echo -e "${YELLOW}🧹 Cleaning up port forward...${NC}"
@@ -100,11 +124,15 @@ for service in "${SERVICES[@]}"; do
         continue
     fi
     
-    # Build the image with upstream tag
+    # Build the image with upstream tag (from quant-services repo root)
     IMAGE_TAG="$LOCAL_REGISTRY_EXTERNAL/$service:$TAG"
     
     echo "  Building: $IMAGE_TAG"
-    if docker build -t "$IMAGE_TAG" "$SERVICE_DIR"; then
+    echo "  Context: $QUANT_SERVICES_ROOT"
+    echo "  Dockerfile: $SERVICE_DIR/Dockerfile"
+    
+    # Build the image
+    if docker build -t "$IMAGE_TAG" -f "$SERVICE_DIR/Dockerfile" "$QUANT_SERVICES_ROOT"; then
         echo -e "${GREEN}  ✅ Build successful for $service:$TAG${NC}"
         
         # Also tag with latest for backward compatibility
@@ -120,7 +148,7 @@ for service in "${SERVICES[@]}"; do
             echo "  Pushing: $LATEST_TAG"
             if docker push "$LATEST_TAG"; then
                 echo -e "${GREEN}  ✅ Push successful for $service:latest${NC}"
-                ((SUCCESS_COUNT++))
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
             else
                 echo -e "${RED}  ❌ Latest tag push failed for $service${NC}"
                 FAILED_SERVICES+=("$service (latest tag push failed)")

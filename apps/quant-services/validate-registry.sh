@@ -2,7 +2,7 @@
 # Validate Quant Services in Dev Lab Registry
 # This script checks if all required images are available in the local registry
 
-set -e
+set -o pipefail  # More permissive than set -e but still catches pipeline failures
 
 LOCAL_REGISTRY_EXTERNAL="localhost:5000"
 
@@ -32,23 +32,50 @@ SERVICES=(
     "wnba-reports"
 )
 
-# Setup registry port forwarding
-echo -e "${BLUE}🔧 Setting up registry port forwarding...${NC}"
-kubectl port-forward -n dev-lab-registry service/docker-registry 5000:5000 &
-PORT_FORWARD_PID=$!
-sleep 5
+# Smart port forwarding setup - detect existing port forwards
+echo -e "${BLUE}🔧 Setting up registry connectivity...${NC}"
 
-# Cleanup function
+# Check if registry is already accessible (existing port forward)
+if curl -s http://localhost:5000/v2/ > /dev/null 2>&1; then
+    echo -e "${GREEN}✅ Registry already accessible at localhost:5000 (existing port forward detected)${NC}"
+    PORT_FORWARD_PID=""
+    CREATED_PORT_FORWARD=false
+else
+    echo -e "${YELLOW}📡 Creating new port forward...${NC}"
+    kubectl port-forward -n dev-lab-registry service/docker-registry 5000:5000 &
+    PORT_FORWARD_PID=$!
+    CREATED_PORT_FORWARD=true
+    
+    # Wait for port forward to be ready
+    echo -e "${YELLOW}⏳ Waiting for port forward to be ready...${NC}"
+    for i in {1..10}; do
+        if curl -s http://localhost:5000/v2/ > /dev/null 2>&1; then
+            echo -e "${GREEN}✅ Port forward ready${NC}"
+            break
+        elif [ $i -eq 10 ]; then
+            echo -e "${RED}❌ Port forward failed to become ready${NC}"
+            exit 1
+        else
+            sleep 1
+        fi
+    done
+fi
+
+# Cleanup function - only kill port forward if we created it
 cleanup() {
-    echo -e "${YELLOW}🧹 Cleaning up port forward...${NC}"
-    kill $PORT_FORWARD_PID 2>/dev/null || true
+    if [ "$CREATED_PORT_FORWARD" = true ]; then
+        echo -e "${YELLOW}🧹 Cleaning up port forward...${NC}"
+        kill $PORT_FORWARD_PID 2>/dev/null || true
+    else
+        echo -e "${BLUE}ℹ️  Leaving existing port forward active${NC}"
+    fi
 }
 trap cleanup EXIT
 
-# Check registry availability
-echo -e "${BLUE}📡 Checking registry availability...${NC}"
+# Verify registry is accessible
+echo -e "${BLUE}📡 Verifying registry connectivity...${NC}"
 if curl -s http://localhost:5000/v2/ > /dev/null; then
-    echo -e "${GREEN}✅ Registry is accessible${NC}"
+    echo -e "${GREEN}✅ Registry is accessible and responding${NC}"
 else
     echo -e "${RED}❌ Registry is not accessible${NC}"
     exit 1
