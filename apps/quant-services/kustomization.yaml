@@ -29,3 +29,8 @@ spec:
             linkerd.io/inject: enabled
             config.linkerd.io/proxy-cpu-limit: "1"
             config.linkerd.io/proxy-memory-limit: "512Mi"
+  # Pass image registry configuration to the quant-services layer
+  postBuild:
+    substitutions:
+      QS_IMAGE_REGISTRY: ${QS_IMAGE_REGISTRY}
+      QS_IMAGE_REPOSITORY: ${QS_IMAGE_REPOSITORY}
