@@ -16,7 +16,7 @@ spec:
   # Depend on container registry being available
   dependsOn:
     - name: dev-lab-registry
-  # Apply patches for service mesh integration
+  # Apply patches for service mesh integration and image registry configuration
   patches:
     # Enable Linkerd service mesh injection for all quant-services pods
     - target:
@@ -29,6 +29,17 @@ spec:
             linkerd.io/inject: enabled
             config.linkerd.io/proxy-cpu-limit: "1"
             config.linkerd.io/proxy-memory-limit: "512Mi"
+    # Inject image registry substitutions into the quant-applications Kustomization
+    - target:
+        kind: Kustomization
+        name: quant-applications
+      patch: |
+        - op: add
+          path: /spec/postBuild
+          value:
+            substitutions:
+              QS_IMAGE_REGISTRY: ${QS_IMAGE_REGISTRY}
+              QS_IMAGE_REPOSITORY: ${QS_IMAGE_REPOSITORY}
   # Pass image registry configuration to the quant-services layer
   postBuild:
     substitutions:
