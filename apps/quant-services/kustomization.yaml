@@ -16,10 +16,6 @@ spec:
   # Depend on container registry being available
   dependsOn:
     - name: dev-lab-registry
-  postBuild:
-    substitute:
-      QS_IMAGE_REGISTRY: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
-      QS_IMAGE_REPOSITORY: ""
   # Apply patches for service mesh integration
   patches:
     # Enable Linkerd service mesh injection for all quant-services pods
