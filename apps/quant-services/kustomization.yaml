@@ -40,8 +40,3 @@ spec:
             substitutions:
               QS_IMAGE_REGISTRY: ${QS_IMAGE_REGISTRY}
               QS_IMAGE_REPOSITORY: ${QS_IMAGE_REPOSITORY}
-  # Pass image registry configuration to the quant-services layer
-  postBuild:
-    substitutions:
-      QS_IMAGE_REGISTRY: ${QS_IMAGE_REGISTRY}
-      QS_IMAGE_REPOSITORY: ${QS_IMAGE_REPOSITORY}
