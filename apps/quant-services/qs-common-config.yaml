@@ -6,25 +6,27 @@ metadata:
   namespace: quant-services
 data:
   # Image registry configuration for quant-services
-  image.registry: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
-  image.repository: ""
+  image:
+    registry: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
+    repository: ""
 
   # Google client config
-  env.GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID'
-  env.GOOGLE_CLIENT_SECRET: 'GOOGLE_CLIENT_SECRET'
-  
+  env:
+    GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID'
+    GOOGLE_CLIENT_SECRET: 'GOOGLE_CLIENT_SECRET'
+
   # Kafka configuration
-  env.ADH_KAFKA_BOOTSTRAP_SERVERS: 'ADH_KAFKA_BOOTSTRAP_SERVERS'
-  env.ADH_KAFKA_TOPIC: 'ADH_KAFKA_TOPIC'
-  env.KAFKA_BOOTSTRAP_SERVERS: "quant-cluster-kafka-bootstrap.quant-services.svc.cluster.local:9192"
+    ADH_KAFKA_BOOTSTRAP_SERVERS: 'ADH_KAFKA_BOOTSTRAP_SERVERS'
+    ADH_KAFKA_TOPIC: 'ADH_KAFKA_TOPIC'
+    KAFKA_BOOTSTRAP_SERVERS: "quant-cluster-kafka-bootstrap.quant-services.svc.cluster.local:9192"
 
   # Clickhouse configuration
-  env.CLICKHOUSE_HOST: clickhouse-clickhouse.clickhouse.svc.cluster.local
-  env.CLICKHOUSE_PORT: 8123
+    CLICKHOUSE_HOST: clickhouse-clickhouse.clickhouse.svc.cluster.local
+    CLICKHOUSE_PORT: 8123
 
   # Redis configuration
-  env.REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
-  env.REDIS_PORT: 6379
+    REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
+    REDIS_PORT: 6379
   # Dashboard Redis configuration
-  env.DASH_REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
-  env.DASH_REDIS_PORT: 6379
+    DASH_REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
+    DASH_REDIS_PORT: 6379
