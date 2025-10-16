@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: quant-services
+  labels:
+    app.kubernetes.io/part-of: quant-services-layer
+    app.kubernetes.io/managed-by: flux
+    name: quant-services
