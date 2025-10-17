@@ -1,10 +1,10 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: quant-services
 
-# HelmReleases for quant-services
-# These are managed in the consuming repository so they can reference
-# the hashed ConfigMap names correctly
+# HelmReleases for quant-services following ATS pattern
+# These reference the hashed ConfigMap names via kustomizeconfig.yaml
 
 resources:
   - adh-consumer.yaml
@@ -20,4 +20,6 @@ resources:
   - unabated-news-feeder.yaml
   - wnba-reports.yaml
 
-# Name reference configuration handled at parent level
+# Enable ConfigMap name reference updates (links to hashed ConfigMap)
+configurations:
+  - kustomizeconfig.yaml

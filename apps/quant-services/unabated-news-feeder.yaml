@@ -1,11 +1,10 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: unabated-news-feeder
-  namespace: flux-system
 spec:
   interval: 1h0m0s
-  targetNamespace: quant-services
   chart:
     spec:
       chart: ./charts/unabated-news-feeder
@@ -14,9 +13,9 @@ spec:
         name: quant-services
         namespace: flux-system
   valuesFrom:
-  - kind: ConfigMap
-    name: qs-common-config
-    valuesKey: values.yaml
+    - kind: ConfigMap
+      name: qs-common-config
+      valuesKey: values.yaml
   values:
     image:
       name: unabated-news-feeder
