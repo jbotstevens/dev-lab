@@ -6,7 +6,6 @@ configMapGenerator:
   - name: qs-common-config
     files:
       - values.yaml=qs-common-values.yaml
-generatorOptions:
-  disableNameSuffixHash: true
+# This ensures ConfigMap gets a new name when content changes
 configurations:
   - kustomizeconfig.yaml
