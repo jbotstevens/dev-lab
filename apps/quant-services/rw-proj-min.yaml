@@ -16,7 +16,6 @@ spec:
   valuesFrom:
   - kind: ConfigMap
     name: qs-common-config
-    namespace: quant-services
     valuesKey: values.yaml
   values:
     image:
