@@ -3,7 +3,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: quant-services
+  annotations:
+    linkerd.io/inject: enabled
   labels:
+    # Additional labels for monitoring and observability
+    linkerd.io/is-control-plane: "false"
+    config.linkerd.io/admission-webhooks: disabled
     app.kubernetes.io/part-of: quant-services-layer
     app.kubernetes.io/managed-by: flux
-    name: quant-services
