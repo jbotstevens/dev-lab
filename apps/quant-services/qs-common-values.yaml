@@ -1,7 +1,7 @@
 ---
 # Common configuration for all quant-services charts
 image:
-  registry: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
+  registry: "docker-registry.dev-lab-registry:5000"
   repository: ""
   pullPolicy: "IfNotPresent"
 
@@ -45,3 +45,4 @@ serviceAccount:
 # Common pod annotations for Linkerd injection
 podAnnotations:
   linkerd.io/inject: "enabled"
+  config.linkerd.io/skip-outbound-ports: "5000"
