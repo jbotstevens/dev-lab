@@ -1,31 +1,23 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-metadata:
-  name: quant-services-layer
-  namespace: flux-system
-spec:
-  interval: 5m
-  sourceRef:
-    kind: GitRepository
-    name: quant-services
-  path: "./quant-services-layer"
-  prune: true
-  wait: true
-  timeout: 15m
-  # Depend on container registry being available
-  dependsOn:
-    - name: dev-lab-registry
-  # Apply patches for service mesh integration
-  patches:
-    # Enable Linkerd service mesh injection for all quant-services pods
-    - target:
-        kind: Namespace
-        name: quant-services
-      patch: |
-        - op: add
-          path: /metadata/annotations
-          value:
-            linkerd.io/inject: enabled
-            config.linkerd.io/proxy-cpu-limit: "1"
-            config.linkerd.io/proxy-memory-limit: "512Mi"
+
+# HelmReleases for quant-services
+# These are managed in the consuming repository so they can reference
+# the hashed ConfigMap names correctly
+
+resources:
+  - adh-consumer.yaml
+  - betticker-ws.yaml
+  - dash-auth.yaml
+  - dash-ws.yaml
+  - external-prices-gather.yaml
+  - nba-livescores.yaml
+  - news-gather.yaml
+  - rapid-pini-feeder.yaml
+  - rw-proj-min-store.yaml
+  - rw-proj-min.yaml
+  - unabated-news-feeder.yaml
+  - wnba-reports.yaml
+
+# Name reference configuration handled at parent level

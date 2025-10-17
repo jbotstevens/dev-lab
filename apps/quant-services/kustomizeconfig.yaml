@@ -10,3 +10,13 @@ nameReference:
     fieldSpecs:
       - path: spec/valuesFrom/name
         kind: HelmRelease
+        version: v2
+        group: helm.toolkit.fluxcd.io
+      - path: spec/valuesFrom/name
+        kind: HelmRelease
+        version: v2beta1
+        group: helm.toolkit.fluxcd.io
+      - path: spec/valuesFrom/name
+        kind: HelmRelease
+        version: v2beta2
+        group: helm.toolkit.fluxcd.io

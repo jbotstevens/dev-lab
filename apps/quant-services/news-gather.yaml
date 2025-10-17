@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: news-gather
+spec:
+  interval: 1h0m0s
+  chart:
+    spec:
+      chart: ./charts/news-gather
+      sourceRef:
+        kind: GitRepository
+        name: quant-services
+        namespace: flux-system
+  valuesFrom:
+  - kind: ConfigMap
+    name: qs-common-config
+    valuesKey: values.yaml
+  values:
+    image:
+      name: news-gather
+      tag: 1.0.0

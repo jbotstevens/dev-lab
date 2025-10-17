@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nba-livescores
+spec:
+  interval: 1h0m0s
+  chart:
+    spec:
+      chart: ./charts/nba-livescores
+      sourceRef:
+        kind: GitRepository
+        name: quant-services
+        namespace: flux-system
+  valuesFrom:
+  - kind: ConfigMap
+    name: qs-common-config
+    valuesKey: values.yaml
+  values:
+    image:
+      name: nba-livescores
+      tag: 1.0.0
