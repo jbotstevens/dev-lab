@@ -1,22 +1,21 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rw-proj-min-store
+  name: betticker-ws
 spec:
   interval: 1h0m0s
   chart:
     spec:
-      chart: ./charts/rw-proj-min-store
+      chart: ./charts/betticker-ws
       sourceRef:
         kind: GitRepository
         name: quant-services
         namespace: flux-system
   valuesFrom:
-    - kind: ConfigMap
-      name: qs-common-config
-      valuesKey: values.yaml
+  - kind: ConfigMap
+    name: qs-common-config
+    valuesKey: values.yaml
   values:
     image:
-      name: rw-proj-min-store
+      name: betticker-ws
       tag: 1.0.0

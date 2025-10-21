@@ -1,0 +1,53 @@
+---
+# Kafka Infrastructure Components - Deploy operator first, then configuration
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kafka-infrastructure.strimzi-operator
+  namespace: flux-system
+  labels:
+    app.kubernetes.io/component: kafka-infrastructure
+    app.kubernetes.io/layer: strimzi-operator
+    app.kubernetes.io/part-of: quant-services-layer
+spec:
+  interval: 5m
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: quant-services
+  path: ./quant-services-layer/components/strimzi-kafka
+  targetNamespace: quant-services
+  prune: true
+  wait: true
+  timeout: 10m0s
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: strimzi-cluster-operator
+      namespace: quant-services
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kafka-infrastructure.kafka-cluster
+  namespace: flux-system
+  labels:
+    app.kubernetes.io/component: kafka-infrastructure
+    app.kubernetes.io/layer: kafka-cluster
+spec:
+  interval: 5m
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: quant-services
+  path: ./quant-services-layer/components/strimzi-kafka-config
+  prune: true
+  wait: true
+  timeout: 15m0s
+  dependsOn:
+    - name: kafka-infrastructure.strimzi-operator
+  healthChecks:
+    - apiVersion: kafka.strimzi.io/v1beta2
+      kind: Kafka
+      name: quant-cluster
+      namespace: quant-services

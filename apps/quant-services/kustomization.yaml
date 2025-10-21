@@ -1,25 +1,22 @@
 ---
+# Quant Services Layer - Complete deployment including Kafka infrastructure and applications
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: quant-services
-
-# HelmReleases for quant-services following ATS pattern
-# These reference the hashed ConfigMap names via kustomizeconfig.yaml
-
+metadata:
+  name: quant-services-layer
+  namespace: flux-system
 resources:
-  - adh-consumer.yaml
-  - betticker-ws.yaml
-  - dash-auth.yaml
-  - dash-ws.yaml
-  - external-prices-gather.yaml
-  - nba-livescores.yaml
-  - news-gather.yaml
-  - rapid-pini-feeder.yaml
-  - rw-proj-min-store.yaml
-  - rw-proj-min.yaml
-  - unabated-news-feeder.yaml
-  - wnba-reports.yaml
-
-# Enable ConfigMap name reference updates (links to hashed ConfigMap)
-configurations:
-  - kustomizeconfig.yaml
+  # Foundation - Namespace and basic setup
+  - namespace.yaml
+  
+  # Infrastructure Phase - Redis and Kafka (must come before applications)
+  - component-kustomizations/redis-infrastructure.yaml
+  - component-kustomizations/kafka-infrastructure.yaml
+  
+  # Applications Phase - All quant services (depends on infrastructure)
+  - component-kustomizations/quant-applications.yaml
+  
+commonLabels:
+  app.kubernetes.io/part-of: quant-services-layer
+  app.kubernetes.io/managed-by: flux
+  quant.profile: production

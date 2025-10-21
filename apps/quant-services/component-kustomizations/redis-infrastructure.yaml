@@ -1,0 +1,27 @@
+---
+# Redis Infrastructure - Cache infrastructure for quant services
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: redis-infrastructure
+  namespace: flux-system
+  labels:
+    app.kubernetes.io/component: redis-infrastructure
+    app.kubernetes.io/layer: infrastructure
+    app.kubernetes.io/part-of: quant-services-layer
+spec:
+  interval: 5m
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: quant-services
+  path: ./quant-services-layer/components/redis
+  targetNamespace: quant-services
+  prune: true
+  wait: true
+  timeout: 10m0s
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: redis-master
+      namespace: redis

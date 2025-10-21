@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: quant-services
+configMapGenerator:
+- name: qs-common-config
+  files:
+    - values.yaml=config/qs-common-config.yaml
+  options:
+    disableNameSuffixHash: false
+resources:
+- services/adh-consumer.yaml
+- services/betticker-ws.yaml
+- services/dash-auth.yaml
+- services/dash-ws.yaml
+- services/external-prices-gather.yaml
+- services/nba-livescores.yaml
+- services/news-gather.yaml
+- services/rapid-pini-feeder.yaml
+- services/rw-proj-min.yaml
+- services/rw-proj-min-store.yaml
+- services/unabated-news-feeder.yaml
+- services/wnba-reports.yaml
+configurations:
+- kustomizeconfig.yaml

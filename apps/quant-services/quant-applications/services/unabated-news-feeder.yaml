@@ -1,22 +1,21 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: nba-livescores
+  name: unabated-news-feeder
 spec:
   interval: 1h0m0s
   chart:
     spec:
-      chart: ./charts/nba-livescores
+      chart: ./charts/unabated-news-feeder
       sourceRef:
         kind: GitRepository
         name: quant-services
         namespace: flux-system
   valuesFrom:
-    - kind: ConfigMap
-      name: qs-common-config
-      valuesKey: values.yaml
+  - kind: ConfigMap
+    name: qs-common-config
+    valuesKey: values.yaml
   values:
     image:
-      name: nba-livescores
+      name: unabated-news-feeder
       tag: 1.0.0

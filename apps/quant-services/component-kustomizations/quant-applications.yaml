@@ -1,0 +1,74 @@
+---
+# Quant Applications - All services that depend on Kafka and Redis
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: quant-applications
+  namespace: flux-system
+  labels:
+    app.kubernetes.io/component: quant-applications
+    app.kubernetes.io/layer: applications
+    app.kubernetes.io/part-of: quant-services-layer
+spec:
+  interval: 5m
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: dev-lab-repo
+  path: ./apps/quant-services/components/quant-applications
+  targetNamespace: quant-services
+  prune: true
+  wait: true
+  timeout: 15m0s
+  dependsOn:
+    - name: redis-infrastructure
+    - name: kafka-infrastructure.kafka-cluster
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: adh-consumer
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: betticker-ws
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: dash-auth
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: dash-ws
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: external-prices-gather
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: nba-livescores
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: news-gather
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: rapid-pini-feeder
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: rw-proj-min-store
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: rw-proj-min
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: unabated-news-feeder
+      namespace: quant-services
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: wnba-reports
+      namespace: quant-services
