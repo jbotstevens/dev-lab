@@ -1,0 +1,6 @@
+---
+env:
+  REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
+  REDIS_PORT: "6379"
+  DASH_REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
+  DASH_REDIS_PORT: "6379"

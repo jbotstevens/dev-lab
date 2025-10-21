@@ -1,0 +1,4 @@
+---
+env:
+  CLICKHOUSE_HOST: "clickhouse-clickhouse.clickhouse.svc.cluster.local"
+  CLICKHOUSE_PORT: "8123"

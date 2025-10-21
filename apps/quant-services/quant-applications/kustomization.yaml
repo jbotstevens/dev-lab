@@ -8,6 +8,21 @@ configMapGenerator:
     - values.yaml=config/qs-common-config.yaml
   options:
     disableNameSuffixHash: false
+- name: qs-clickhouse
+  files:
+    - values.yaml=config/qs-clickhouse.yaml
+  options:
+    disableNameSuffixHash: false
+- name: qs-google
+  files:
+    - values.yaml=config/qs-google.yaml
+  options:
+    disableNameSuffixHash: false
+- name: qs-redis
+  files:
+    - values.yaml=config/qs-redis.yaml
+  options:
+    disableNameSuffixHash: false
 resources:
 - services/adh-consumer.yaml
 - services/betticker-ws.yaml

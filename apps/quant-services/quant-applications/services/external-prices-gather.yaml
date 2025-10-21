@@ -15,6 +15,9 @@ spec:
   - kind: ConfigMap
     name: qs-common-config
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: qs-clickhouse
+    valuesKey: values.yaml
   values:
     image:
       name: external-prices-gather

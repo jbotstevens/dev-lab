@@ -3,18 +3,6 @@ image:
   registry: "localhost:5000"
   repository: ""
   pullPolicy: "IfNotPresent"
-env:
-  GOOGLE_CLIENT_ID: "GOOGLE_CLIENT_ID"
-  GOOGLE_CLIENT_SECRET: "GOOGLE_CLIENT_SECRET"
-  ADH_KAFKA_BOOTSTRAP_SERVERS: "ADH_KAFKA_BOOTSTRAP_SERVERS"
-  ADH_KAFKA_TOPIC: "ADH_KAFKA_TOPIC"
-  KAFKA_BOOTSTRAP_SERVERS: "quant-kafka-service.quant-services.svc.cluster.local:9192"
-  CLICKHOUSE_HOST: "clickhouse-clickhouse.clickhouse.svc.cluster.local"
-  CLICKHOUSE_PORT: "8123"
-  REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
-  REDIS_PORT: "6379"
-  DASH_REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
-  DASH_REDIS_PORT: "6379"
 resources:
   limits:
     cpu: "500m"
@@ -28,3 +16,7 @@ serviceAccount:
 podAnnotations:
   linkerd.io/inject: "enabled"
   config.linkerd.io/skip-outbound-ports: "5000"
+env:
+  ADH_KAFKA_BOOTSTRAP_SERVERS: "ADH_KAFKA_BOOTSTRAP_SERVERS"
+  ADH_KAFKA_TOPIC: "ADH_KAFKA_TOPIC"
+  KAFKA_BOOTSTRAP_SERVERS: "quant-kafka-service.quant-services.svc.cluster.local:9192"
