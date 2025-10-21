@@ -15,7 +15,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: dev-lab-repo
-  path: ./apps/quant-services/components/quant-applications
+  path: ./apps/quant-services/quant-applications
   targetNamespace: quant-services
   prune: true
   wait: true
