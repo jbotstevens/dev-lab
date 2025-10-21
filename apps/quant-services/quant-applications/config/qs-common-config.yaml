@@ -8,7 +8,7 @@ env:
   GOOGLE_CLIENT_SECRET: "GOOGLE_CLIENT_SECRET"
   ADH_KAFKA_BOOTSTRAP_SERVERS: "ADH_KAFKA_BOOTSTRAP_SERVERS"
   ADH_KAFKA_TOPIC: "ADH_KAFKA_TOPIC"
-  KAFKA_BOOTSTRAP_SERVERS: "quant-cluster-kafka-bootstrap.quant-services.svc.cluster.local:9192"
+  KAFKA_BOOTSTRAP_SERVERS: "quant-kafka-service.quant-services.svc.cluster.local:9192"
   CLICKHOUSE_HOST: "clickhouse-clickhouse.clickhouse.svc.cluster.local"
   CLICKHOUSE_PORT: "8123"
   REDIS_HOST: "redis-master.quant-services.svc.cluster.local"
