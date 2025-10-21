@@ -1,6 +1,6 @@
 ---
 image:
-  registry: "localhost:5000"
+  registry: "dev-lab-control-plane:5000"
   repository: ""
   pullPolicy: "IfNotPresent"
 resources:
