@@ -1,6 +1,6 @@
 ---
 image:
-  registry: "docker-registry.dev-lab-registry:5000"
+  registry: "docker-registry.dev-lab-registry.svc.cluster.local:5000"
   repository: ""
   pullPolicy: "IfNotPresent"
 env:
