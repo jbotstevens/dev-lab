@@ -1,0 +1,30 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: quant-services
+configMapGenerator:
+  - name: qs-common-config
+    files:
+      - values.yaml=../../quant-services/quant-applications/config/qs-common-config.yaml
+    options:
+      disableNameSuffixHash: false
+  - name: qs-clickhouse
+    files:
+      - values.yaml=../../quant-services/quant-applications/config/qs-clickhouse.yaml
+    options:
+      disableNameSuffixHash: false
+  - name: qs-redis
+    files:
+      - values.yaml=../../quant-services/quant-applications/config/qs-redis.yaml
+    options:
+      disableNameSuffixHash: false
+  - name: qpc-common-config
+    files:
+      - values.yaml=../../quant-services/quant-applications/config/qs-redis.yaml
+    options:
+      disableNameSuffixHash: false
+resources:
+  - services/frontend.yaml
+  - services/backend.yaml
+configurations:
+  - kustomizeconfig.yaml

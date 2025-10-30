@@ -1,0 +1,25 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: quant-pricing-console-frontend
+spec:
+  interval: 1h0m0s
+  chart:
+    spec:
+      chart: ./charts/frontend
+      sourceRef:
+        kind: GitRepository
+        name: quant-traders-dash
+        namespace: flux-system
+  valuesFrom:
+    - kind: ConfigMap
+      name: qs-common-config
+      valuesKey: values.yaml
+    - kind: ConfigMap
+      name: qpc-common-config
+      valuesKey: values.yaml
+  values:
+    image:
+      name: frontend
+      tag: 1.0.0

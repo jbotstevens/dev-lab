@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: quant-traders-dash
+  namespace: flux-system
+spec:
+  interval: 5m
+  url: ssh://github.com/amelcocloud/quant-traders-dash
+  ref:
+    branch: XOPS-0000-quant-traders-dash-layer
+  secretRef:
+    name: quant-traders-dash
