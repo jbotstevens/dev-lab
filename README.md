@@ -1,5 +1,7 @@
 # Local Kubernetes Development Lab
 
+![Version](https://img.shields.io/badge/Version-v0.5.1-blue)
+
 A comprehensive local development environment with **dual deployment options**: traditional script-based or modern GitOps-based, now featuring a **platform-agnostic Python CLI**.
 
 > **📖 For GitOps setup guide, see [GITOPS-GUIDE.md](./GITOPS-GUIDE.md)**
@@ -24,29 +26,44 @@ A comprehensive local development environment with **dual deployment options**: 
 # Setup Python environment
 python3 python/setup.py
 
+# Put the wrapper script in your path so you can cd away from this repo
+export PATH="$PATH:$(pwd)/devlab"
+
 # Build local tool container images (optional, built automatically when needed)
-./devlab build-tools
+devlab build-tools
 
 # Bootstrap the cluster
-./devlab bootstrap
+devlab bootstrap
 
 # Deploy using traditional method
-./devlab deploy-traditional
+devlab deploy-traditional
 
 # OR deploy using GitOps method
-./devlab deploy-gitops
+devlab deploy-gitops
 
 # Check status
-./devlab status
+devlab status
 
 # Use container-based tools
-./devlab kubectl -- get pods -A
-./devlab helm -- list -A
-./devlab linkerd -- check
-./devlab flux -- get all -A
+devlab kubectl -- get pods -A
+devlab helm -- list -A
+devlab linkerd -- check
+devlab flux -- get all -A
+
+# Do this if you hate typing
+## Then create some aliases
+alias kubectl='devlab kubectl --'
+alias helm='devlab helm --'
+alias linkerd='devlab linkerd --'
+alias flux='devlab flux --'
+
+# Do this if you hate typing
+alias kubectl='./devlab kubectl --'
+alias helm='./devlab helm --'
+alias flux='./devlab flux --'
 
 # Cleanup when done
-./devlab cleanup
+devlab cleanup
 ```
 
 ### Option 2: Bash Scripts (Legacy)
@@ -185,6 +202,7 @@ The dev-lab includes a comprehensive service mesh testing environment with Linke
 - **Production-Ready Test App**: Node.js application with health checks, metrics, and Redis backend
 
 ### Canary Deployment Methods
+
 `<!-- TODO: update canary tests (include flagger) -->`
 
 #### Method 1: Linkerd Native HTTPRoute (Recommended)
@@ -535,12 +553,37 @@ Edit `cluster/kind-config.yaml` to:
 - Configure networking
 - Add extra mounts
 
+## Versioning
+
+This project uses **automated semantic versioning** based on branch naming conventions:
+
+- 🚀 `feature/*` → `dev` = Minor version bump
+- 🔧 `patch/*` → `dev` = Patch version bump  
+- 🎉 `dev` → `main` = Major version bump
+
+Check current version and rules:
+
+```bash
+./scripts/version-info.sh        # Show version info
+./scripts/version-info.sh rules  # Show versioning rules
+```
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed workflow guidelines.
+
 ## Performance Tips
 
 1. **Resource Allocation**: The lightweight monitoring configuration reduces resource usage significantly
 2. **Image Management**: Use `kind load` for development, registry for CI/CD simulation
 3. **Persistent Storage**: Registry data persists in `/var/lib/registry` on control-plane node
 4. **Port Forwarding**: Use kubectl port-forward instead of NodePort for better performance
+
+## Misc
+
+Lint markdown like this:
+
+```bash
+mkdownfix --exclude-dirs apps/mesh-test-app/node_modules
+```
 
 ## License
 
